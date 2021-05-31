@@ -1,8 +1,8 @@
 # Cardif
 Projeto de teste para oportunidade na cardif
 
-## Instalação
+## Swagger
 
 ```
-$ /bin
+$ http://localhost:8080/swagger-ui.html
 ```
