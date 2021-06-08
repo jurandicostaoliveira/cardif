@@ -8,8 +8,7 @@ import com.cardif.util.Validation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class EmployeeService {
@@ -52,9 +51,8 @@ public class EmployeeService {
             Position position = positionService.findById(
                     currentEmployee.getCurrentPosition().getPositionId()
             );
-            HashSet<Position> history = new HashSet<>();
-            history.add(position);
-            employee.setHistoryPosition(history);
+
+            employee.setHistoryPosition(Set.of(position));
             save(employee);
         }
     }

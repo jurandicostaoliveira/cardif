@@ -1,12 +1,22 @@
 package com.cardif.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @SuppressWarnings("serial")
+@Builder
 public class Department implements Serializable {
 
     @Id
@@ -27,29 +37,5 @@ public class Department implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "employee_id", unique = true)
     )
     private Set<Employee> employees = new HashSet<>();
-
-    public int getDepartmentId() {
-        return departmentId;
-    }
-
-    public void setDepartmentId(int departmentId) {
-        this.departmentId = departmentId;
-    }
-
-    public String getDepartmentName() {
-        return departmentName;
-    }
-
-    public void setDepartmentName(String departmentName) {
-        this.departmentName = departmentName;
-    }
-
-    public Set<Employee> getEmployees() {
-        return employees;
-    }
-
-    public void setEmployees(Set<Employee> employees) {
-        this.employees = employees;
-    }
 
 }

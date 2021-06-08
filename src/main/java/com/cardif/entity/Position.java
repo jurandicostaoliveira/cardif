@@ -1,10 +1,19 @@
 package com.cardif.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @SuppressWarnings("serial")
+@Builder
 public class Position implements Serializable {
 
     @Id
@@ -15,29 +24,5 @@ public class Position implements Serializable {
     private String positionName;
 
     private boolean isBoss = false;
-
-    public int getPositionId() {
-        return positionId;
-    }
-
-    public void setPositionId(int positionId) {
-        this.positionId = positionId;
-    }
-
-    public String getPositionName() {
-        return positionName;
-    }
-
-    public void setPositionName(String positionName) {
-        this.positionName = positionName;
-    }
-
-    public boolean isBoss() {
-        return isBoss;
-    }
-
-    public void setBoss(boolean boss) {
-        isBoss = boss;
-    }
 
 }
