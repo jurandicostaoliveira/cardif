@@ -1,5 +1,6 @@
 package com.cardif.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -38,10 +39,10 @@ public class Employee implements Serializable {
     @JoinColumn(name = "position_id", referencedColumnName = "positionId")
     private Position currentPosition;
 
-    @ManyToMany(
+    @OneToMany(
             targetEntity = Position.class,
-            cascade = CascadeType.MERGE,
-            fetch = FetchType.LAZY
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER
     )
     @JoinTable(
             name = "history_employee_position",
@@ -49,5 +50,22 @@ public class Employee implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "position_id")
     )
     private Set<Position> historyPosition = new HashSet<>();
+
+    /*
+    @OneToOne(
+            targetEntity = Department.class,
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY
+    )
+    @JoinTable(
+            name = "employee_department",
+            joinColumns = @JoinColumn(name = "employee_id"),
+            inverseJoinColumns = @JoinColumn(name = "department_id")
+    )
+
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "depto_id", nullable = false)
+    private Department department;
 
 }

@@ -1,16 +1,20 @@
 package com.cardif.service;
 
+import com.cardif.entity.Department;
 import com.cardif.entity.Employee;
 import com.cardif.entity.Position;
 import com.cardif.repository.EmployeeRepository;
 import com.cardif.util.Calculator;
 import com.cardif.util.Validation;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
+import java.util.Set;
 
 @Service
+@Log4j2
 public class EmployeeService {
 
     @Autowired
@@ -31,28 +35,31 @@ public class EmployeeService {
     }
 
     public Employee save(Employee employee) {
-        Position position = positionService.findById(
-                employee.getCurrentPosition().getPositionId()
-        );
+        Position position = positionService
+                .findById(employee.getCurrentPosition().getPositionId());
 
-        if (Validation.isZero(position.getPositionId())) {
+        Department department = departmentService
+                .findById(employee.getDepartment().getDepartmentId());
+
+        if (Validation.containsZero(List.of(
+                position.getPositionId(), department.getDepartmentId()
+        ))) {
             return new Employee();
         }
 
         employee.setEmployeeAge(Calculator.currentAge(employee.getEmployeeBirthday()));
         employee.setCurrentPosition(position);
+        employee.setDepartment(department);
         return repository.save(employee);
     }
 
     public void replace(Employee employee) {
         Employee currentEmployee = findById(employee.getEmployeeId());
 
-        if (Validation.largerZero(currentEmployee.getEmployeeId())) {
-            Position position = positionService.findById(
-                    currentEmployee.getCurrentPosition().getPositionId()
-            );
-
-            employee.setHistoryPosition(Set.of(position));
+        if (!Validation.isZero(currentEmployee.getEmployeeId())) {
+            Set<Position> historyPosition = currentEmployee.getHistoryPosition();
+            historyPosition.add(currentEmployee.getCurrentPosition());
+            employee.setHistoryPosition(historyPosition);
             save(employee);
         }
     }

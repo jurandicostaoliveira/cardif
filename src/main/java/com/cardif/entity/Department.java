@@ -26,16 +26,19 @@ public class Department implements Serializable {
     @Column(length = 50)
     private String departmentName;
 
-    @ManyToMany(
+    /**
+    @OneToMany(
             targetEntity = Employee.class,
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY
     )
     @JoinTable(
             name = "employee_department",
-            joinColumns = @JoinColumn(name = "department_id", unique = true),
-            inverseJoinColumns = @JoinColumn(name = "employee_id", unique = true)
+            joinColumns = @JoinColumn(name = "department_id"),
+            inverseJoinColumns = @JoinColumn(name = "employee_id")
     )
+    */
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "department")
     private Set<Employee> employees = new HashSet<>();
 
 }
