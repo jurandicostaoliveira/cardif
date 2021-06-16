@@ -2,6 +2,7 @@ package com.cardif.service;
 
 import com.cardif.entity.Department;
 import com.cardif.repository.DepartmentRepository;
+import com.cardif.util.Validation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,7 @@ public class DepartmentService {
     }
 
     public void replace(Department department) {
-        if (findById(department.getDepartmentId()).getDepartmentId() > 0) {
+        if (!Validation.isZero(findById(department.getDepartmentId()).getDepartmentId())) {
             repository.save(department);
         }
     }

@@ -1,5 +1,6 @@
 package com.cardif.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,8 +17,8 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@SuppressWarnings("serial")
 @Builder
+@SuppressWarnings("serial")
 public class Employee implements Serializable {
 
     @Id
@@ -51,21 +52,8 @@ public class Employee implements Serializable {
     )
     private Set<Position> historyPosition = new HashSet<>();
 
-    /*
-    @OneToOne(
-            targetEntity = Department.class,
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY
-    )
-    @JoinTable(
-            name = "employee_department",
-            joinColumns = @JoinColumn(name = "employee_id"),
-            inverseJoinColumns = @JoinColumn(name = "department_id")
-    )
-
-     */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "depto_id", nullable = false)
+    //@JsonBackReference
+    @Transient
     private Department department;
 
 }

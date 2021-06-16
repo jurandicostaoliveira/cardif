@@ -1,5 +1,6 @@
 package com.cardif.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,8 +16,8 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@SuppressWarnings("serial")
 @Builder
+@SuppressWarnings("serial")
 public class Department implements Serializable {
 
     @Id
@@ -26,19 +27,18 @@ public class Department implements Serializable {
     @Column(length = 50)
     private String departmentName;
 
-    /**
     @OneToMany(
             targetEntity = Employee.class,
             cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY
+            fetch = FetchType.EAGER,
+            orphanRemoval = true
     )
     @JoinTable(
             name = "employee_department",
             joinColumns = @JoinColumn(name = "department_id"),
             inverseJoinColumns = @JoinColumn(name = "employee_id")
     )
-    */
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "department")
+    //@JsonManagedReference
     private Set<Employee> employees = new HashSet<>();
 
 }

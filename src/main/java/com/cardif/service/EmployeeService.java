@@ -6,6 +6,7 @@ import com.cardif.entity.Position;
 import com.cardif.repository.EmployeeRepository;
 import com.cardif.util.Calculator;
 import com.cardif.util.Validation;
+import com.google.common.collect.Sets;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,22 +36,23 @@ public class EmployeeService {
     }
 
     public Employee save(Employee employee) {
-        Position position = positionService
-                .findById(employee.getCurrentPosition().getPositionId());
-
-        Department department = departmentService
-                .findById(employee.getDepartment().getDepartmentId());
+        Position position = positionService.findById(employee.getCurrentPosition().getPositionId());
+        Department department = departmentService.findById(employee.getDepartment().getDepartmentId());
 
         if (Validation.containsZero(List.of(
-                position.getPositionId(), department.getDepartmentId()
+                position.getPositionId(),
+                department.getDepartmentId()
         ))) {
             return new Employee();
         }
 
         employee.setEmployeeAge(Calculator.currentAge(employee.getEmployeeBirthday()));
         employee.setCurrentPosition(position);
-        employee.setDepartment(department);
-        return repository.save(employee);
+        Set<Employee> es = department.getEmployees();
+        es.add(employee);
+        department.setEmployees(es);
+        Department departmentSaved = departmentService.save(department);
+        return departmentSaved.getEmployees().stream().findFirst().get();
     }
 
     public void replace(Employee employee) {

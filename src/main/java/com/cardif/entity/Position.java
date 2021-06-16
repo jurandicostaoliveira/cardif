@@ -12,8 +12,8 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@SuppressWarnings("serial")
 @Builder
+@SuppressWarnings("serial")
 public class Position implements Serializable {
 
     @Id
