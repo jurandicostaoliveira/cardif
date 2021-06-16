@@ -1,6 +1,5 @@
 package com.cardif.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -38,7 +37,6 @@ public class Department implements Serializable {
             joinColumns = @JoinColumn(name = "department_id"),
             inverseJoinColumns = @JoinColumn(name = "employee_id")
     )
-    //@JsonManagedReference
     private Set<Employee> employees = new HashSet<>();
 
 }

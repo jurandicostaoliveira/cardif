@@ -38,18 +38,22 @@ public class EmployeeController {
 
     @PostMapping("/employee")
     public ResponseEntity<Employee> save(@RequestBody Employee body) {
-        Employee employee = service.save(body);
-        if (Validation.isZero(employee.getEmployeeId())) {
+        try {
+            Employee employee = service.save(body);
+            return new ResponseEntity<>(employee, HttpStatus.CREATED);
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
-        return new ResponseEntity<>(employee, HttpStatus.CREATED);
     }
 
     @PutMapping("/employee")
     public ResponseEntity<Void> replace(@RequestBody Employee body) {
-        service.replace(body);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        try {
+            service.replace(body);
+        } catch (Exception e) {
+        } finally {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
     }
 
     @DeleteMapping("/employee/{id}")
